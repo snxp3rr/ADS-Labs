@@ -139,6 +139,17 @@ public:
         return *this * (T{1} / scalar);
     }
 
+    T trace() const {
+        if (rows_ != cols_) {
+            throw std::invalid_argument("Trace only for square matrices");
+        }
+        T result = T{};
+        for (std::size_t i = 0; i < rows_; ++i) {
+            result += (*this)(i, i);
+        }
+        return result;
+    }
+
     ~Matrix() {
         delete[] data_;
     }
