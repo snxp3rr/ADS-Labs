@@ -61,4 +61,18 @@ public:
             }
         }
     }
+
+    T& operator()(std::size_t i, std::size_t j) {
+        if (i >= rows_ || j >= cols_) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data_[i * cols_ + j];
+    }
+
+    const T& operator()(std::size_t i, std::size_t j) const {
+        if (i >= rows_ || j >= cols_) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data_[i * cols_ + j];
+    }
 }
