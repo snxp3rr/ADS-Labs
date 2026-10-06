@@ -75,4 +75,67 @@ public:
         }
         return data_[i * cols_ + j];
     }
+
+        bool operator!=(const Matrix& other) const {
+        return !(*this == other);
+    }
+
+    Matrix operator+(const Matrix& other) const {
+        if (rows_ != other.rows_ || cols_ != other.cols_) {
+            throw std::invalid_argument("Matrices must have the same size");
+        }
+        Matrix result(rows_, cols_, T{});
+        for (std::size_t i = 0; i < rows_ * cols_; ++i) {
+            result.data_[i] = data_[i] + other.data_[i];
+        }
+        return result;
+    }
+
+    Matrix operator-(const Matrix& other) const {
+        return *this + (-other);
+    }
+
+    Matrix operator-() const {
+        Matrix result(rows_, cols_, T{});
+        for (std::size_t i = 0; i < rows_ * cols_; ++i) {
+            result.data_[i] = -data_[i];
+        }
+        return result;
+    }
+
+    Matrix operator*(const Matrix& other) const {
+        if (cols_ != other.rows_) {
+            throw std::invalid_argument("Matrix dimensions mismatch for multiplication");
+        }
+        Matrix result(rows_, other.cols_, T{});
+        for (std::size_t i = 0; i < rows_; ++i) {
+            for (std::size_t j = 0; j < other.cols_; ++j) {
+                T sum = T{};
+                for (std::size_t k = 0; k < cols_; ++k) {
+                    sum += (*this)(i, k) * other(k, j);
+                }
+                result(i, j) = sum;
+            }
+        }
+        return result;
+    }
+
+    Matrix operator*(const T& scalar) const {
+        Matrix result(rows_, cols_, T{});
+        for (std::size_t i = 0; i < rows_ * cols_; ++i) {
+            result.data_[i] = data_[i] * scalar;
+        }
+        return result;
+    }
+
+    friend Matrix operator*(const T& scalar, const Matrix& m) {
+        return m * scalar;
+    }
+
+    Matrix operator/(const T& scalar) const {
+        if (scalar == T{}) {
+            throw std::invalid_argument("Division by zero");
+        }
+        return *this * (T{1} / scalar);
+    }
 }
