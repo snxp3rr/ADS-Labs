@@ -175,6 +175,16 @@ public:
         return *this;
     }
 
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& m) {
+        for (std::size_t i = 0; i < m.rows_; ++i) {
+            for (std::size_t j = 0; j < m.cols_; ++j) {
+                os << m(i, j) << " ";
+            }
+            os << "\n";
+        }
+        return os;
+    }
+
     std::size_t rows() const { return rows_; }
     std::size_t cols() const { return cols_; }
 }
