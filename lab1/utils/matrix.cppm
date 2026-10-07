@@ -187,4 +187,4 @@ public:
 
     std::size_t rows() const { return rows_; }
     std::size_t cols() const { return cols_; }
-}
+};
